@@ -140,6 +140,7 @@ class Notification < ApplicationRecord
       when 'Issue', 'PullRequest'
         remote_subject = download_subject
         return unless remote_subject.present?
+        return unless remote_subject.user.present?
 
         create_subject({
           state: remote_subject.merged_at.present? ? 'merged' : remote_subject.state,
@@ -151,6 +152,7 @@ class Notification < ApplicationRecord
       when 'Commit', 'Release'
         remote_subject = download_subject
         return unless remote_subject.present?
+        return unless remote_subject.author.present?
 
         create_subject({
           author: remote_subject.author.login,
