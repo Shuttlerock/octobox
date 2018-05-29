@@ -194,7 +194,8 @@ class NotificationsController < ApplicationController
   #   HEAD 204
   #
   def sync
-    current_user.sync_notifications
+    # current_user.sync_notifications
+    SyncNotificationsWorker.perform_async(current_user.id)
     respond_to do |format|
       format.html { redirect_back fallback_location: root_path }
       format.json { head :ok }
